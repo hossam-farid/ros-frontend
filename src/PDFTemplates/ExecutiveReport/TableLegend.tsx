@@ -1,11 +1,3 @@
-import {
-    Table,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr
-} from '@patternfly/react-table';
 import React, { ReactNode } from 'react';
 
 export type TableLegendProps = {
@@ -13,27 +5,29 @@ export type TableLegendProps = {
   rows: ReactNode[][];
 };
 
+// Plain elements with PatternFly's class names: a PDF is never interactive,
+// so it keeps the styling without the hooks PatternFly runs for every cell.
 const TableLegend: React.FC<TableLegendProps> = ({ rows, columns }) => (
-    <Table isStriped variant="compact">
-        <Thead>
-            <Tr>
+    <table role="grid" className="pf-v6-c-table pf-m-grid-md pf-m-compact pf-m-striped">
+        <thead className="pf-v6-c-table__thead">
+            <tr className="pf-v6-c-table__tr">
                 {columns.map((column, index) => (
-                    <Th key={index}>{column}</Th>
+                    <th key={index} scope="col" className="pf-v6-c-table__th">{column}</th>
                 ))}
-            </Tr>
-        </Thead>
-        <Tbody>
+            </tr>
+        </thead>
+        <tbody role="rowgroup" className="pf-v6-c-table__tbody">
             {rows.map((row, i) => (
-                <Tr key={i}>
+                <tr key={i} className="pf-v6-c-table__tr">
                     {row.map((item, index) => (
-                        <Td className="pf-v6-u-pt-xs pf-v6-u-pb-xs" key={index}>
+                        <td className="pf-v6-c-table__td pf-v6-u-pt-xs pf-v6-u-pb-xs" key={index}>
                             {item}
-                        </Td>
+                        </td>
                     ))}
-                </Tr>
+                </tr>
             ))}
-        </Tbody>
-    </Table>
+        </tbody>
+    </table>
 );
 
 export default TableLegend;

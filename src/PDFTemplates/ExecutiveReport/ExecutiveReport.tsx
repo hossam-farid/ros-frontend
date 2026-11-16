@@ -19,14 +19,6 @@ import {
     Title
 } from '@patternfly/react-core';
 import { AngleDoubleDownIcon, AngleDoubleUpIcon, AutomationIcon, CheckCircleIcon, InProgressIcon, TachometerAltIcon } from '@patternfly/react-icons';
-import {
-    Table,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr
-} from '@patternfly/react-table';
 import type { FetchData } from '@redhat-cloud-services/types';
 import type { AxiosRequestConfig } from 'axios';
 
@@ -450,55 +442,57 @@ const ExecutiveReport = ({ asyncData: { data } }: { asyncData: AsyncData }) => {
                           Breakdown of occurences
                         </Title>
                         <Grid hasGutter>
+                            {/* Plain elements with PatternFly's class names: a PDF is never interactive,
+                                so it keeps the styling without the hooks PatternFly runs for every cell. */}
                             {[
                                 { ...ioConditions, title: 'Disk I/O' },
                                 { ...memoryConditions, title: 'RAM' },
                                 { ...cpuConditions, title: 'CPU' }
                             ].map(({ title, under_pressure, undersized, oversized }, i) => (
                                 <GridItem span={4} key={title}>
-                                    <Table isStriped variant="compact">
-                                        <Thead>
-                                            <Tr>
-                                                <Th colSpan={2}>
+                                    <table role="grid" className="pf-v6-c-table pf-m-grid-md pf-m-compact pf-m-striped">
+                                        <thead className="pf-v6-c-table__thead">
+                                            <tr className="pf-v6-c-table__tr">
+                                                <th scope="col" className="pf-v6-c-table__th" colSpan={2}>
                                                     <TextWithColorDot color={blueColorScale?.[i] ?? '#06C'}>
                                                         {title}
                                                     </TextWithColorDot>
-                                                </Th>
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody role="rowgroup" className="pf-v6-c-table__tbody">
                                             {under_pressure > 0 ? (
-                                                <Tr>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                <tr className="pf-v6-c-table__tr">
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                       Under pressure
-                                                    </Td>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                    </td>
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                         {under_pressure}
-                                                    </Td>
-                                                </Tr>
+                                                    </td>
+                                                </tr>
                                             ) : null}
                                             {undersized > 0 ? (
-                                                <Tr>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                <tr className="pf-v6-c-table__tr">
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                       Undersized
-                                                    </Td>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                    </td>
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                         {undersized}
-                                                    </Td>
-                                                </Tr>
+                                                    </td>
+                                                </tr>
                                             ) : null}
                                             {oversized > 0 ? (
-                                                <Tr>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                <tr className="pf-v6-c-table__tr">
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                       Oversized
-                                                    </Td>
-                                                    <Td className="pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
+                                                    </td>
+                                                    <td className="pf-v6-c-table__td pf-v6-u-font-size-xs pf-v6-u-pt-xs pf-v6-u-pb-xs">
                                                         {oversized}
-                                                    </Td>
-                                                </Tr>
+                                                    </td>
+                                                </tr>
                                             ) : null}
-                                        </Tbody>
-                                    </Table>
+                                        </tbody>
+                                    </table>
                                 </GridItem>
                             ))}
                         </Grid>
